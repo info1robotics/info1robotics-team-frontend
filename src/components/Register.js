@@ -4,7 +4,7 @@ import ServerMessage from '../components/ServerMessage';
 
 
 const Register = (props) => {
-    const [user, setUser] = useState({username: "", password: "", secret: ""});
+    const [user, setUser] = useState({username: "", password: "", secret: "", role: "user"});
     const [message, setMessage] = useState(null);
     let timerID = useRef(null);
 
@@ -28,8 +28,8 @@ const Register = (props) => {
             const {success, message } = data;
             console.log(message);
             setMessage({success, msgBody: message});
-            resetForm();
             if(success) {
+                resetForm();
                 timerID = setTimeout(() => {
                     props.history.push('/user/login');
                 }, 2000);

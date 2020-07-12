@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -12,6 +12,7 @@ const Navbar = props => {
             if(data.success) {
                 setUser(data.user);
                 setIsAuthenticated(false);
+                props.history.push('/home');
             }
         });
     };
@@ -20,13 +21,13 @@ const Navbar = props => {
         return (
             <>
                 <Link to="/">
-                    <li className="nav-item nav-link">Home</li>
+                    <li className="btn btn-link nav-item nav-link">Home</li>
                 </Link>
                 <Link to="/user/login">
-                    <li className="nav-item nav-link">Login</li>
+                    <li className="btn btn-link nav-item nav-link">Login</li>
                 </Link>
                 <Link to="/user/register">
-                    <li className="nav-item nav-link">Register</li>
+                    <li className="btn btn-link nav-item nav-link">Register</li>
                 </Link>
             </>
         );
@@ -36,15 +37,15 @@ const Navbar = props => {
         return (
         <>
             <Link to="/">
-                <li className="nav-item nav-link">Home</li>
+                <li className="btn btn-link nav-item nav-link">Home</li>
             </Link>
             <Link to="/uploads">
-                <li className="nav-item nav-link">Uploads</li>
+                <li className="btn btn-link nav-item nav-link">Uploads</li>
             </Link>
             {
                 user.role === "admin" ?
                 <Link to="/admin">
-                    <li className="nav-item nav-link">Admin</li>
+                    <li className="btn btn-link nav-item nav-link">Admin</li>
                 </Link> : null
             }
             <button type="button"
@@ -55,6 +56,7 @@ const Navbar = props => {
     }
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="brand-name">infO(1) Robotics</div>
             <Link to="/">
                 <div className="navbar-brand"></div>
             </Link>
@@ -65,12 +67,9 @@ const Navbar = props => {
                 <ul className="navbar-nav mr-auto">
                     {!isAuthenticated? unauthenticatedNav() : authenticatedNav()}
                 </ul>
-                <span className="navbar-text">
-                Navbar text with an inline element
-                </span>
             </div>
         </nav>
     );
 };
 
-export default Navbar;
+export default withRouter(Navbar);
