@@ -20,7 +20,7 @@ function App() {
         <Route exact path="/user/register" component={Register} />
         <Route exact path="/uploads" component={Uploads}/>
         <Route exact path="/uploads/new" component={UploadNew} />
-        <Route exact path="/upload/:flname" component={UploadDash} />
+        <Route exact path="/upload/:id" component={UploadDash} />
       </Router>
     </>
   );

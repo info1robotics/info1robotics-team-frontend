@@ -43,7 +43,7 @@ const UploadNew = (props) => {
             if(success) {
                 timerID = setTimeout(() => {
                     props.history.push('/uploads');
-                }, 2000);
+                }, 500);
             }
         });
     }
