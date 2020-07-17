@@ -4,7 +4,7 @@ import ServerMessage from '../components/ServerMessage';
 
 
 const Register = (props) => {
-    const [user, setUser] = useState({username: "", password: "", secret: "", role: "user"});
+    const [user, setUser] = useState({username: "", email: "", password: "", secret: "", role: "user"});
     const [message, setMessage] = useState(null);
     let timerID = useRef(null);
 
@@ -18,10 +18,6 @@ const Register = (props) => {
         setUser({...user, [event.target.name] : event.target.value});
     };
 
-    const resetForm = () => {
-        setUser({username: "", password: "", secret: ""});
-    }
-
     const onSubmitHandler = (event) => {
         event.preventDefault();
         AuthService.register(user).then(data => {
@@ -29,7 +25,6 @@ const Register = (props) => {
             console.log(message);
             setMessage({success, msgBody: message});
             if(success) {
-                resetForm();
                 timerID = setTimeout(() => {
                     props.history.push('/user/login');
                 }, 2000);
@@ -47,6 +42,12 @@ const Register = (props) => {
                        onChange={onChangeHandler}
                        className="form-control"
                        placeholder="Enter username" />
+                <label htmlFor="email" className="sr-only">Email</label>
+                <input type="text" 
+                       name="email" 
+                       onChange={onChangeHandler}
+                       className="form-control"
+                       placeholder="Enter email" />
                 <label htmlFor="password" className="sr-only">Password</label>
                 <input type="password" 
                        name="password" 

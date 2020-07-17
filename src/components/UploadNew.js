@@ -34,6 +34,7 @@ const UploadNew = (props) => {
 
         uploadForm.append('file', upload.file);
         uploadForm.append('tags', upload.tags);
+        uploadForm.append('integrated', false);
 
         event.preventDefault();
         UploadsService.newUpload(uploadForm).then(data => {

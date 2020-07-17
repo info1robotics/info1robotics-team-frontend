@@ -68,7 +68,7 @@ const Navbar = props => {
                     {!isAuthenticated? unauthenticatedNav() : authenticatedNav()}
                 </ul>
             </div>
-            <span class="navbar-text font-weight-bold">
+            <span className="navbar-text font-weight-bold">
                 { isAuthenticated? user.username : "Guest"}
             </span>
         </nav>

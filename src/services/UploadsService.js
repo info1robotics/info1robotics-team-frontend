@@ -19,7 +19,25 @@ export default {
         .then(data => data);
     },
     getUpload: (id) => {
-        return fetch('/uploads/one/' + id).then(res => {
+        return fetch('/uploads/one/', {
+            method: 'post',
+            body: JSON.stringify({upload: id}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if(res.status !== 401) return res.json().then(data => data);
+            else return {success: false, message: "You are not logged in!", upload: {}};
+        });
+    },
+    deleteUpload: (id) => {
+        return fetch('/uploads/one/delete', {
+            method: 'delete',
+            body: JSON.stringify({upload: id}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
             if(res.status !== 401) return res.json().then(data => data);
             else return {success: false, message: "You are not logged in!", upload: {}};
         });
