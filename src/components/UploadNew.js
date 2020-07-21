@@ -54,6 +54,7 @@ const UploadNew = (props) => {
         <div>
             <form onSubmit={onSubmitHandler}>
                 <h1>New Upload</h1>
+                <div className="dropdown-divider mt-3 mb-4"/>
                 <label htmlFor="file" className="sr-only">File Input</label>
                 <input type="file"
                        name="file"

@@ -8,7 +8,7 @@ export default {
             }
         }).then(res => {
             if(res.status !== 401) return res.json().then(data => data);
-            else return {success: false, message: "Could not !", exists: false, review: {}}; 
+            else return {success: false, message: "Could not !"}; 
         });
     },
     getUserReview: (id) => {
@@ -20,7 +20,7 @@ export default {
             }
         }).then(res => {
             if(res.status !== 401) return res.json().then(data => data);
-            else return {success: false, message: "Could not !", exists: false, review: {}}; 
+            else return {success: false, message: "Could not !"}; 
         });
     },
     newReview: review => {

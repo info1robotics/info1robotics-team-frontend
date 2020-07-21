@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import AuthService from '../services/AuthService';
+import UsersService from '../services/UsersService';
 import {AuthContext} from '../contexts/AuthContext';
 import ServerMessage from '../components/ServerMessage';
 
@@ -15,7 +15,7 @@ const Login = (props) => {
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
-        AuthService.login(user).then(data => {
+        UsersService.login(user).then(data => {
             const {isAuthenticated, user, message } = data;
             if(isAuthenticated) {
                 authContext.setUser(user);
@@ -31,6 +31,7 @@ const Login = (props) => {
         <>
             <form onSubmit={onSubmitHandler}>
                 <h1>Sign In</h1>
+                <div className="dropdown-divider mt-3 mb-4"/>
                 <label htmlFor="username" className="sr-only">Username</label>
                 <input type="text" 
                        name="username" 

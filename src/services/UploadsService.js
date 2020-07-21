@@ -1,6 +1,6 @@
 export default {
     getMyUploads: () => {
-        return fetch('/user/uploads').then(res => { // TODO: ENDPOINT RENAME TO '/uploads/my'
+        return fetch('/users/uploads').then(res => { // TODO: ENDPOINT RENAME TO '/uploads/my'
             if(res.status !== 401) return res.json().then(data => data);
             else return [];
         });
@@ -8,7 +8,7 @@ export default {
     getAllUploads: () => {
         return fetch('/uploads/all/').then(res => {
             if(res.status !== 401) return res.json().then(data => data);
-            else return {success: false, message: "You are not logged in!", upload: {}};
+            else return {success: false, message: "You are not logged in!"};
         });
     },
     newUpload: (uploadForm) => {
@@ -27,7 +27,7 @@ export default {
             }
         }).then(res => {
             if(res.status !== 401) return res.json().then(data => data);
-            else return {success: false, message: "You are not logged in!", upload: {}};
+            else return {success: false, message: "You are not logged in!"};
         });
     },
     deleteUpload: (id) => {
@@ -39,7 +39,22 @@ export default {
             }
         }).then(res => {
             if(res.status !== 401) return res.json().then(data => data);
-            else return {success: false, message: "You are not logged in!", upload: {}};
+            else return {success: false, message: "You are not logged in!"};
+        });
+    },
+    updateUploadIntegration: (id, integrated) => {
+        return fetch('/uploads/one/updateIntegration', {
+            method: 'post',
+            body: JSON.stringify({upload: {
+                _id: id,
+                integrated
+            }}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if(res.status !== 401) return res.json().then(data => data);
+            else return {success: false, message: "You are not logged in!"};
         });
     }
 }

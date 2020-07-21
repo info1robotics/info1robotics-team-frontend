@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef, UseEffect, useEffect } from 'react';
-import AuthService from '../services/AuthService';
+import UsersService from '../services/UsersService';
 import ServerMessage from '../components/ServerMessage';
 
 
@@ -20,9 +20,8 @@ const Register = (props) => {
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
-        AuthService.register(user).then(data => {
+        UsersService.activateUser(user).then(data => {
             const {success, message } = data;
-            console.log(message);
             setMessage({success, msgBody: message});
             if(success) {
                 timerID = setTimeout(() => {
@@ -36,6 +35,7 @@ const Register = (props) => {
         <div>
             <form onSubmit={onSubmitHandler}>
                 <h1>Register</h1>
+                <div className="dropdown-divider mt-3 mb-4"/>
                 <label htmlFor="username" className="sr-only">Username</label>
                 <input type="text" 
                        name="username" 
@@ -54,11 +54,6 @@ const Register = (props) => {
                        onChange={onChangeHandler}
                        className="form-control"
                        placeholder="Enter password" />
-                <input type="password"
-                       name="secret"
-                       onChange={onChangeHandler}
-                       className="form-control"
-                       placeholder="Enter secret" />
                 <button className="btn btn-lg btn-primary btn-block"
                     type="submit">Register</button>
                 

@@ -8,7 +8,6 @@ const ReviewBox = (props) => {
 
     const [comment, setComment] = useState("");
     const [positive, setPositive] = useState(false);
-    const [review, setReview] = useState(null);
     const authContext = useContext(AuthContext);
 
     
@@ -20,7 +19,6 @@ const ReviewBox = (props) => {
         ReviewsService.getUserReview(props.upload._id).then(data => {
             if(data.success) {
                 if(data.review) {
-                    setReview(data.review);
                     setComment(data.review.comment);
                     setPositive(data.review.positive);
                 }
@@ -50,8 +48,8 @@ const ReviewBox = (props) => {
 
     const submitReview = () => {
         ReviewsService.newReview({comment, positive, upload: props.upload}).then(data => {
-            props.dash.history.push(`/home`);
-            props.dash.history.push(`/upload/${props.upload._id}`);
+            props.history.push(`/home`);
+            props.history.push(`/upload/${props.upload._id}`);
         });
     };
 
@@ -90,37 +88,43 @@ const ReviewsGroup = (props) => {
 
 }
 
-const ReviewsStatus = (props) => {
-    const [status, setStatus] = useState({});
+const CoreStatus = (props) => {
+    const [reviewsStatus, setReviewsStatus] = useState({});
 
     useEffect(() => {
         let allReviews = props.reviews.filter(review => review);
 
         if(allReviews.length === 0) {
-            setStatus({flag: 0, message: "0/0 No reviews"});
+            setReviewsStatus({flag: 0, message: "0/0 No reviews"});
         } else {
             const positiveReviews = allReviews.filter(review => review.positive === true);
 
             if(positiveReviews.length === allReviews.length) {
-                setStatus({flag: 1, message: `${positiveReviews.length}/${allReviews.length} Ready`});
+                setReviewsStatus({flag: 1, message: `${positiveReviews.length}/${allReviews.length} Ready`});
             } else {
-                setStatus({flag: 2, message: `${positiveReviews.length}/${allReviews.length} Requires changes`});
+                setReviewsStatus({flag: 2, message: `${positiveReviews.length}/${allReviews.length} Requires changes`});
             }
         }
         
 
     }, []);
 
-    const getAlertClass = (flag) => {
-        if(flag === 0) return "alert-warning";
-        else if(flag === 1) return "alert-success";
-        else if(flag === 2) return "alert-danger";
+    const getStatusVariant = (flag) => {
+        if(flag === 0) return "warning";
+        else if(flag === 1) return "success";
+        else if(flag === 2) return "danger";
     };
 
     return (
-        <div class={`alert ${getAlertClass(status.flag)} d-block`}>
-            <span className="d-block text-center">{status.message}</span>
-        </div>
+        <>
+            {
+            props.upload.integrated?
+            <h6 className={`card-subtitle text-${getStatusVariant(reviewsStatus.flag)} mb-2`}>In Notebook</h6> : 
+            <div className={`alert alert-${getStatusVariant(reviewsStatus.flag)} d-block mb-2 w-100`}>
+                <span className="d-block text-center align-middle">{reviewsStatus.message}</span>
+            </div> 
+            }
+        </>
     );
 };
 
@@ -149,10 +153,13 @@ const CoreInfo = (props) => {
     const confirmAndDelete = (e) => {
         if(deleteText === "Delete") {
             setDeleteText("Confirm again");
+            setTimeout(() => {
+                setDeleteText("Delete");
+            }, 2000);
         } else {
             UploadsService.deleteUpload(props.upload._id).then(data => {
                 if(data.success) {
-                    props.dash.history.push('/uploads');
+                    props.history.push('/uploads');
                 } else {
                     /* TODO */
                 }
@@ -161,25 +168,81 @@ const CoreInfo = (props) => {
             
         }
     };
+    
+
+    const onIntegrationChangeHandler = (event) => {
+    
+
+        const changeFunction = async (event) => {
+            let data;
+            if(event.target.name === "optionNotIntegrated") {
+                data = await UploadsService.updateUploadIntegration(props.upload._id, false);
+            } else if(event.target.name === "optionIntegrated") {
+                data = await UploadsService.updateUploadIntegration(props.upload._id, true);
+            }
+
+            if(data.success) {
+                /* TODO */
+            } else {
+                /* TODO */
+            }
+
+            props.history.push(`/home`);
+            props.history.push(`/upload/${props.upload._id}`);
+        }
+
+        changeFunction(event);
+
+        
+    };
 
     
     return (
         <>
-            <div className="col-12 col-md-2">
-                <ReviewsStatus reviews={props.reviews} />
-            </div>
             
-            <div className="col-12 col-md-6">
-                <h2 className="">{props.upload.name}</h2>
-                <h6 className="mb-2 text-muted">{props.upload._id}</h6>
-                <Tags upload={props.upload} />
+            <div className="col-12 col-md-5 border-right" style={{borderColor: "gray"}}>
+                <div className="col">
+                    <div className="row">
+                        <h2 className="">{props.upload.name}</h2>
+                    </div>
+                    <div className="row">
+                        <h6 className="mb-2 text-muted">Posted by: {props.upload.author.username}</h6>
+                    </div>
+                    
+                    <div className="row">
+                        <Tags upload={props.upload} />
+                    </div>
+
+                    <div className="row">
+                        <CoreStatus reviews={props.reviews} upload={props.upload} />
+                    </div>
+                    
+                    <div className="d-s-none pb-2"></div>
+                </div>
+                
             </div>
 
-            <div className="col-12 col-md-2">
-                <div className="row">
-                    <a href={"http://localhost:5002/uploads/download/" + props.upload.name} type="button" className="btn btn-primary btn-block float-right">Download</a>
-                    {authContext.user._id === props.upload.author._id? <button type="button" className="btn btn-danger btn-block float-right"onClick={confirmAndDelete}>{deleteText}</button> : null }
-                </div>           
+            <div className="col-12 col-md-5">
+                <div className="row h-100 align-content-center">
+                    <div className="col-12">
+                        <a href={"http://localhost:5002/uploads/download/" + props.upload.name} type="button" className="btn btn-primary btn-block float-right">Download</a>
+                        {
+                        authContext.user.role === "admin"?
+                        <div className="btn-group btn-group-toggle w-100 mt-2 mb-2">
+                            <label className={`btn btn-secondary${!props.upload.integrated ? " active" : ""}`}>
+                                <input type="radio" name="optionNotIntegrated" autoComplete="off" defaultChecked={!props.upload.integrated} onChange={onIntegrationChangeHandler} />Not Integrated
+                            </label>
+                            <label className={`btn btn-secondary${props.upload.integrated ? " active" : ""}`}>
+                                <input type="radio" name="optionIntegrated" autoComplete="off" defaultChecked={props.upload.integrated} onChange={onIntegrationChangeHandler} />Integrated
+                            </label>
+                        </div> : null
+                        }
+                        
+                        {authContext.user._id === props.upload.author._id? <button type="button" className="btn btn-danger btn-block float-right" onClick={confirmAndDelete}>{deleteText}</button> : null }
+                        
+                    </div>
+                    
+                </div>      
             </div>
         </>
     );
@@ -217,19 +280,19 @@ const UploadDash = (props) => {
     
     const FetchedView = () => {
         return (
-            <>
-                <div className="row pt-3 pb-5 justify-content-center align-items-center">
-                    <CoreInfo upload={upload} dash={props} reviews={reviews} />
+            <div className="p-2">
+                <div className="row pt-3 pb-5 justify-content-center align-items-stretch">
+                    <CoreInfo upload={upload} history={props.history} reviews={reviews} />
                 </div>
                 <div className="row">
                     <ReviewsGroup upload={upload} reviews={reviews} />
                 </div>
 
                 <div className="row">
-                    <ReviewBox upload={upload} reviews={reviews} dash={props} />
+                    <ReviewBox upload={upload} reviews={reviews} history={props.history} />
                 </div>
                 
-            </>
+            </div>
         );
     };
 

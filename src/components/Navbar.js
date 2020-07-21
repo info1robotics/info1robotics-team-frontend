@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-import AuthService from '../services/AuthService';
+import UsersService from '../services/UsersService';
 import { AuthContext } from '../contexts/AuthContext';
 
 
@@ -8,7 +8,7 @@ const Navbar = props => {
     const { isAuthenticated, user, setIsAuthenticated, setUser} = useContext(AuthContext);
 
     const onClickLogoutHandler = () => {
-        AuthService.logout().then(data => {
+        UsersService.logout().then(data => {
             if(data.success) {
                 setUser(data.user);
                 setIsAuthenticated(false);
@@ -68,7 +68,7 @@ const Navbar = props => {
                     {!isAuthenticated? unauthenticatedNav() : authenticatedNav()}
                 </ul>
             </div>
-            <span className="navbar-text font-weight-bold">
+            <span className={`navbar-text font-weight-bold${user.username === "salexandru"? " text-danger" : ""}`}>
                 { isAuthenticated? user.username : "Guest"}
             </span>
         </nav>
