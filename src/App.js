@@ -22,31 +22,31 @@ function App() {
           <Route exact path="/" component={Home}/>
           <Route exact path="/home" component={Home}/>
           { 
-            !isAuthenticated &&
-            <>
+            !isAuthenticated?
+            <Switch>
               <Route exact path="/user/login" component={Login} /> 
-              <Route exact path="/user/register" component={Register} />  
-            </>
-          }
-          
-          {
-            isAuthenticated &&
-            <>
+              <Route exact path="/user/register" component={Register} />
+              <Route component={NotFound} />
+            </Switch> :
+            <Switch>
               <Route exact path="/uploads" component={Uploads}/>
               <Route exact path="/uploads/new" component={UploadNew} />
               <Route exact path="/upload/:id" component={UploadDash} />
 
               { user.role === "admin" && 
-                <>
+                <Switch>
                   <Route exact path="/admin" component={AdminPanel} />
                   <Route exact path="/inviteUser" component={NewUserInvite} />
-                </>
+                  <Route component={NotFound} />
+                </Switch>
               }
-            </>
+                <Route component={NotFound} />
+            </Switch>
           }
 
+            
 
-          <Route component={NotFound} />
+
         </Switch>
         
         
