@@ -35,7 +35,7 @@ const NewUserInvite = (props) => {
     return (
         <>
             <form onSubmit={onSubmitHandler}>
-                <h1>Sign In</h1>
+                <h1>Invite new user</h1>
                 <div className="dropdown-divider mt-3 mb-4"/>
                 <label htmlFor="email" className="sr-only">Email</label>
                 <input type="text" 
