@@ -3,6 +3,14 @@ import UploadsService from '../services/UploadsService';
 import ReviewsService from '../services/ReviewsService';
 import ReviewCard from './ReviewCard';
 import { AuthContext } from '../contexts/AuthContext';
+import { latestReviews, outdatedReviews } from '../utils/ReviewsUtils';
+import constants from '../constants';
+
+
+
+
+
+
 
 const ReviewBox = (props) => {
 
@@ -14,22 +22,6 @@ const ReviewBox = (props) => {
     const canComment = () => {
         return authContext.user._id !== props.upload.author._id;
     }
-
-    useEffect(() => {
-        ReviewsService.getUserReview(props.upload._id).then(data => {
-            if(data.success) {
-                if(data.review) {
-                    setComment(data.review.comment);
-                    setPositive(data.review.positive);
-                }
-            } else {
-                /* TODO */
-            }
-            
-        });
-
-        
-    }, []);
 
     const getBtnStyle = (positive) => {
         if(positive) return "btn-success";
@@ -71,16 +63,39 @@ const ReviewBox = (props) => {
 
 }
 
+const ReviewsSection = (props) => {
+
+    return (
+        <>
+            <div className="col-12 text-center pb-4">
+                <h2 className="">Latest comments</h2>
+            </div>
+            <ReviewsGroup upload={props.upload} reviews={props.upload.reviews} process={latestReviews} history={props.history} />
+
+            <div className="col-12 pt-4 pb-4 border-bottom">
+                <ReviewBox upload={props.upload} history={props.history} />
+            </div>
+        
+
+            <div className="col-12 text-center pt-4 pb-4">
+                <h2 className="">Outdated comments</h2>
+            </div>
+            <ReviewsGroup upload={props.upload} reviews={props.upload.reviews} process={outdatedReviews} history={props.history} />
+        </>
+    );
+};
+
 const ReviewsGroup = (props) => {
     const [reviewsJSX, setReviewsJSX] = useState([]);
 
 
     useEffect(() => {
-        let aux = [];
-        for(var i = 0; i < props.reviews.length; i++) {
-            aux.push(<ReviewCard review={props.reviews[i]} />);
-        }
-        setReviewsJSX(aux);
+
+        const res = props.process(props.reviews).map( review =>
+            <ReviewCard upload={props.upload} review={review} history={props.history} />
+        );
+        setReviewsJSX(res);
+            
     }, []);
 
     return <>{reviewsJSX}</>;
@@ -88,11 +103,12 @@ const ReviewsGroup = (props) => {
 
 }
 
+
 const CoreStatus = (props) => {
     const [reviewsStatus, setReviewsStatus] = useState({});
 
     useEffect(() => {
-        let allReviews = props.reviews.filter(review => review);
+        let allReviews = latestReviews(props.upload.reviews).filter(review => review);
 
         if(allReviews.length === 0) {
             setReviewsStatus({flag: 0, message: "0/0 No reviews"});
@@ -116,7 +132,7 @@ const CoreStatus = (props) => {
     };
 
     return (
-        <>
+        <div className={props.className}>
             {
             props.upload.integrated?
             <h6 className={`card-subtitle text-${getStatusVariant(reviewsStatus.flag)} mb-2`}>In Notebook</h6> : 
@@ -124,7 +140,7 @@ const CoreStatus = (props) => {
                 <span className="d-block text-center align-middle">{reviewsStatus.message}</span>
             </div> 
             }
-        </>
+        </div>
     );
 };
 
@@ -142,7 +158,7 @@ const Tags = (props) => {
         setTagsJSX(aux);
     }, []);
 
-    return <>{tagsJSX}</>;
+    return <div className={props.className}>{tagsJSX}</div>;
 };
 
 const CoreInfo = (props) => {
@@ -203,18 +219,28 @@ const CoreInfo = (props) => {
             <div className="col-12 col-md-5 border-right" style={{borderColor: "gray"}}>
                 <div className="col">
                     <div className="row">
-                        <h2 className="">{props.upload.name}</h2>
+                        <div className="col p-0">
+                            <h2 className="text-center text-md-left">{props.upload.name}</h2>
+                        </div>
                     </div>
                     <div className="row">
-                        <h6 className="mb-2 text-muted">Posted by: {props.upload.author.username}</h6>
+                        <div className="col p-0">
+                            <h6 className="mb-2 text-muted text-center text-md-left">Posted by: {props.upload.author.username}</h6>
+                        </div>
                     </div>
                     
                     <div className="row">
-                        <Tags upload={props.upload} />
+                        <div className="col p-0 mb-3">
+                            <Tags className="text-center text-md-left" upload={props.upload} />
+                        </div>
+                       
                     </div>
 
                     <div className="row">
-                        <CoreStatus reviews={props.reviews} upload={props.upload} />
+                        <div className="col p-0">
+                            <CoreStatus className="text-center text-md-left" upload={props.upload} />
+                        </div>
+                        
                     </div>
                     
                     <div className="d-s-none pb-2"></div>
@@ -225,7 +251,7 @@ const CoreInfo = (props) => {
             <div className="col-12 col-md-5">
                 <div className="row h-100 align-content-center">
                     <div className="col-12">
-                        <a href={"http://localhost:5002/uploads/download/" + props.upload.name} type="button" className="btn btn-primary btn-block float-right">Download</a>
+                        <a href={`http://${constants.IP_ADDRESS}:5002/uploads/download/` + props.upload.name} type="button" className="btn btn-primary btn-block float-right">Download</a>
                         {
                         authContext.user.role === "admin"?
                         <div className="btn-group btn-group-toggle w-100 mt-2 mb-2">
@@ -252,26 +278,20 @@ const UploadDash = (props) => {
 
     const [upload, setUpload] = useState({});
     const [hasFetched, setHasFetched] = useState(false);
-    const [reviews, setReviews] = useState([]);
 
 
     useEffect(() => {
 
-        // GENERAL DETAILS
-
         UploadsService.getUpload(props.match.params.id).then((data) => {
             if(data.success) {
+                console.log(data.upload);
                 setUpload(data.upload);
-                ReviewsService.getUploadReviews(data.upload._id).then((data) => {
-                    if(data.success) {
-                        setReviews(data.reviews);
-                        setHasFetched(true);
-                    }
-                });
+                
             } else {
-                /* TODO: SeverMessage */
+                /* TODO: ServerMessage */
             }
             
+            setHasFetched(true);
         });
 
 
@@ -281,16 +301,15 @@ const UploadDash = (props) => {
     const FetchedView = () => {
         return (
             <div className="p-2">
-                <div className="row pt-3 pb-5 justify-content-center align-items-stretch">
-                    <CoreInfo upload={upload} history={props.history} reviews={reviews} />
-                </div>
-                <div className="row">
-                    <ReviewsGroup upload={upload} reviews={reviews} />
+                <div className="row mt-3 mb-4 pb-1 justify-content-center align-items-stretch border-bottom">
+                    <CoreInfo upload={upload} history={props.history} />
                 </div>
 
+
                 <div className="row">
-                    <ReviewBox upload={upload} reviews={reviews} history={props.history} />
+                    <ReviewsSection upload={upload} history={props.history} />
                 </div>
+
                 
             </div>
         );

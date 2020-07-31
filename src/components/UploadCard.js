@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { latestReviews } from '../utils/ReviewsUtils';
+import constants from '../constants';
 
 const UploadCard = (props) => {
     const [status, setStatus] = useState({flag: -1, message: "fetching..."});
@@ -18,17 +20,23 @@ const UploadCard = (props) => {
 
         setTagsJSX(aux);
 
-        let allReviews = props.upload.reviews;
+        console.log(props.upload.reviews);
 
-        if(allReviews.length === 0) {
+        let allLatestReviews = latestReviews(props.upload.reviews);
+
+        
+        console.log(allLatestReviews);
+
+
+        if(allLatestReviews.length === 0) {
             setStatus({flag: 0, message: "0/0"});
         } else {
-            const positiveReviews = allReviews.filter(review => review.positive === true);
+            const positiveReviews = allLatestReviews.filter(review => review.positive === true);
 
-            if(positiveReviews.length === allReviews.length) {
-                setStatus({flag: 1, message: `${positiveReviews.length}/${allReviews.length}`});
+            if(positiveReviews.length === allLatestReviews.length) {
+                setStatus({flag: 1, message: `${positiveReviews.length}/${allLatestReviews.length}`});
             } else {
-                setStatus({flag: 2, message: `${positiveReviews.length}/${allReviews.length}`});
+                setStatus({flag: 2, message: `${positiveReviews.length}/${allLatestReviews.length}`});
             }
         }
 
@@ -59,7 +67,7 @@ const UploadCard = (props) => {
                     
                     {tagsJSX}
                     <h5></h5> { /* pentru separarea intre tag-uri si butoane */}
-                    <a href={"http://localhost:5002/uploads/download/" + props.upload.name} className="card-link" download>Download</a> {/* TODO: trebuie neaparat sa vad cum sa folosesc proxy-ul pt file download */}
+                    <a href={`http://${constants.IP_ADDRESS}:5002/uploads/download/` + props.upload.name} className="card-link" download>Download</a> {/* TODO: trebuie neaparat sa vad cum sa folosesc proxy-ul pt file download */}
                     <Link to={`/upload/${props.upload._id}`} className="card-link">Details</Link>
                 </div>
             </div>

@@ -51,8 +51,8 @@ export default {
         });
     },
     updateUsers: (users) => {
-        return fetch('/users/multiple', {
-            method: 'put',
+        return fetch('/users/multiple/update', {
+            method: 'post',
             body: JSON.stringify({users}),
             headers: {
                 'Content-Type': 'application/json'

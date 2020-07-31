@@ -1,6 +1,6 @@
 export default {
     getMyUploads: () => {
-        return fetch('/users/uploads').then(res => { // TODO: ENDPOINT RENAME TO '/uploads/my'
+        return fetch('/uploads/my').then(res => {
             if(res.status !== 401) return res.json().then(data => data);
             else return [];
         });
@@ -32,7 +32,7 @@ export default {
     },
     deleteUpload: (id) => {
         return fetch('/uploads/one/delete', {
-            method: 'delete',
+            method: 'post',
             body: JSON.stringify({upload: id}),
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ export default {
         });
     },
     updateUploadIntegration: (id, integrated) => {
-        return fetch('/uploads/one/updateIntegration', {
+        return fetch('/uploads/one/integration/update', {
             method: 'post',
             body: JSON.stringify({upload: {
                 _id: id,
