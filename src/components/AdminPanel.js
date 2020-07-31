@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import UploadsService from "../services/UploadsService";
 import UploadCard from "./UploadCard";
 import { AuthContext } from "../contexts/AuthContext";
-
+import { latestReviews, outdatedReviews } from '../utils/ReviewsUtils';
 
 
 const AllUsers = (props) => {
@@ -89,11 +89,16 @@ const ReadyToBeIntegratedUploads = (props) => {
     const [uploadsJSX, setUploadsJSX] = useState([]);
 
     useEffect(() => {
+
         const validUploads = props.uploads.filter(upload => {
+
+            const lReviews = latestReviews(upload.reviews);
+            
             return !upload.integrated 
-            && upload.reviews.length > 0 
-            && upload.reviews.filter(upload => upload.positive).length === upload.reviews.length;
+            && lReviews.length > 0 
+            && lReviews.filter(review => review.positive).length === lReviews.length;
         });
+        
 
         setUploadsJSX(
             validUploads.map(upload => <UploadCard upload={upload} />)
