@@ -68,7 +68,7 @@ const UploadNew = (props) => {
                        onChange={onChangeHandler}
                        className="form-control"
                        placeholder="Enter tags separated by commas" />
-                <button className="btn btn-lg btn-primary btn-block"
+                <button className="btn btn-lg btn-primary btn-block shadow mb-2"
                     type="submit">Upload</button>
                 
                 {message? <ServerMessage message={message} /> : null} 

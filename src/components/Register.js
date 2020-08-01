@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, UseEffect, useEffect } from 'react';
 import UsersService from '../services/UsersService';
 import ServerMessage from '../components/ServerMessage';
-
+import Fade from 'react-reveal/Fade';
 
 const Register = (props) => {
     const [user, setUser] = useState({username: "", email: "", password: "", secret: "", role: "user"});
@@ -32,7 +32,7 @@ const Register = (props) => {
     }
 
     return (
-        <div>
+        <Fade down duration={300} distance={"16px"}>
             <form onSubmit={onSubmitHandler}>
                 <h1>Register</h1>
                 <div className="dropdown-divider mt-3 mb-4"/>
@@ -54,12 +54,12 @@ const Register = (props) => {
                        onChange={onChangeHandler}
                        className="form-control"
                        placeholder="Enter password" />
-                <button className="btn btn-lg btn-primary btn-block"
+                <button className="btn btn-lg btn-primary btn-block shadow mb-2"
                     type="submit">Register</button>
                 
                 {message? <ServerMessage message={message} /> : null} 
             </form>
-        </div>
+        </Fade>
     )
 };
 

@@ -11,11 +11,14 @@ import UploadDash from './components/UploadDash';
 import AdminPanel from './components/AdminPanel';
 import NotFound from './components/NotFound';
 import NewUserInvite from './components/NewUserInvite';
+import Fade from 'react-reveal/Fade';
+
+
 
 function App() {
   const { user, setUser, isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   return (
-    <>
+    <Fade down duration={300} distance={"16px"}>
       <Router>
         <Navbar />
         <Switch>
@@ -26,7 +29,6 @@ function App() {
             <Switch>
               <Route exact path="/user/login" component={Login} /> 
               <Route exact path="/user/register" component={Register} />
-              <Route component={NotFound} />
             </Switch> :
             <Switch>
               <Route exact path="/uploads" component={Uploads}/>
@@ -37,10 +39,8 @@ function App() {
                 <Switch>
                   <Route exact path="/admin" component={AdminPanel} />
                   <Route exact path="/inviteUser" component={NewUserInvite} />
-                  <Route component={NotFound} />
                 </Switch>
               }
-                <Route component={NotFound} />
             </Switch>
           }
 
@@ -51,7 +51,7 @@ function App() {
         
         
       </Router>
-    </>
+    </Fade>
   );
 }
 

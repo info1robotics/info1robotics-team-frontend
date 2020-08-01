@@ -12,7 +12,7 @@ const getStyle = (props) => {
 }
 const ServerMessage = (props) =>{ 
     return (
-        <div className={getStyle(props) + " " + props.clsName} role="alert">
+        <div className={`${getStyle(props)} ${props.clsName? props.clsName : ""} shadow rounded`} role="alert">
             {props.message.msgBody}
         </div>
     );

@@ -5,9 +5,8 @@ import ReviewCard from './ReviewCard';
 import { AuthContext } from '../contexts/AuthContext';
 import { latestReviews, outdatedReviews } from '../utils/ReviewsUtils';
 import constants from '../constants';
-
-
-
+import Fade from 'react-reveal/Fade';
+import Tags from './Tags';
 
 
 
@@ -66,22 +65,34 @@ const ReviewBox = (props) => {
 const ReviewsSection = (props) => {
 
     return (
-        <>
-            <div className="col-12 text-center pb-4">
-                <h2 className="">Latest comments</h2>
+        <Fade down duration={300} distance={"16px"}>
+            <div className="col-12 shadow p-3 mb-5 rounded">
+                <div className="text-center mb-5">
+                    <h2 className="">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-right-text-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353V2zM3.5 3a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>
+                    </svg>  Latest comments</h2>
+                </div>
+                <ReviewsGroup upload={props.upload} reviews={props.upload.reviews} process={latestReviews} history={props.history} />
+                <div className="col-12 p-0">
+                    <ReviewBox upload={props.upload} history={props.history} />
+                </div>
             </div>
-            <ReviewsGroup upload={props.upload} reviews={props.upload.reviews} process={latestReviews} history={props.history} />
+            
 
-            <div className="col-12 pt-4 pb-4 border-bottom">
-                <ReviewBox upload={props.upload} history={props.history} />
-            </div>
         
+            <div className="col-12 shadow p-3 mb-2 rounded">
+                <div className="text-center mb-5">
+                    <h2 className="">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-archive-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM6 7a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1H6zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                    </svg>  Outdated comments</h2>
+                </div>
+                <ReviewsGroup upload={props.upload} reviews={props.upload.reviews} process={outdatedReviews} history={props.history} />
 
-            <div className="col-12 text-center pt-4 pb-4">
-                <h2 className="">Outdated comments</h2>
             </div>
-            <ReviewsGroup upload={props.upload} reviews={props.upload.reviews} process={outdatedReviews} history={props.history} />
-        </>
+            
+        </Fade>
     );
 };
 
@@ -144,23 +155,6 @@ const CoreStatus = (props) => {
     );
 };
 
-const Tags = (props) => {
-
-    let [tagsJSX, setTagsJSX] = useState([]);
-
-
-    useEffect(() => {
-        let aux = [];
-        for(var i = 0; i < props.upload.tags.length; i++) {
-            aux.push(<h5 className="pr-1" style={{display: "inline"}}><span className="badge badge-primary">{props.upload.tags[i]}</span></h5>);
-        };
-
-        setTagsJSX(aux);
-    }, []);
-
-    return <div className={props.className}>{tagsJSX}</div>;
-};
-
 const CoreInfo = (props) => {
 
     const [deleteText, setDeleteText] = useState("Delete");
@@ -214,63 +208,79 @@ const CoreInfo = (props) => {
 
     
     return (
-        <>
-            
-            <div className="col-12 col-md-5 border-right" style={{borderColor: "gray"}}>
-                <div className="col">
-                    <div className="row">
-                        <div className="col p-0">
-                            <h2 className="text-center text-md-left">{props.upload.name}</h2>
-                        </div>
+        <Fade down duration={300} distance={"16px"}>
+            <div className="col-12 col-md-6 shadow rounded mb-3 mr-md-3 p-3">
+                <div className="row align-items-center">
+                    <div className="col">
+                        <h2 className="text-center text-md-left" style={{width: "100%", wordWrap: "break-word"}}>
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-text-fill mb-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M2 3a2 2 0 0 1 2-2h5.293a1 1 0 0 1 .707.293L13.707 5a1 1 0 0 1 .293.707V13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3zm7 2V2l4 4h-3a1 1 0 0 1-1-1zM4.5 8a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+</svg>{props.upload.name}</h2>
                     </div>
-                    <div className="row">
+                </div>
+                <div className="row">
+                    <div className="col">
                         <div className="col p-0">
-                            <h6 className="mb-2 text-muted text-center text-md-left">Posted by: {props.upload.author.username}</h6>
+                            <h6 className="mb-2 text-muted text-center text-md-left">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                            </svg> {props.upload.author.username}</h6>
                         </div>
                     </div>
                     
-                    <div className="row">
-                        <div className="col p-0 mb-3">
-                            <Tags className="text-center text-md-left" upload={props.upload} />
-                        </div>
+                </div>
+                    
+                <div className="row">
+                    <div className="col mb-3">
+                        <Tags className="text-center text-md-left" upload={props.upload} />
+                    </div>
                        
-                    </div>
+                </div>
 
-                    <div className="row">
-                        <div className="col p-0">
-                            <CoreStatus className="text-center text-md-left" upload={props.upload} />
-                        </div>
-                        
+                <div className="row">
+                    <div className="col">
+                        <CoreStatus className="text-center text-md-left" upload={props.upload} />
                     </div>
-                    
-                    <div className="d-s-none pb-2"></div>
+                        
                 </div>
                 
             </div>
 
-            <div className="col-12 col-md-5">
+            <div className="col-12 col-md-4 shadow rounded p-3 mb-3">
                 <div className="row h-100 align-content-center">
                     <div className="col-12">
-                        <a href={`http://${constants.IP_ADDRESS}:5002/uploads/download/` + props.upload.name} type="button" className="btn btn-primary btn-block float-right">Download</a>
+                        <a href={`http://${constants.IP_ADDRESS}:5002/uploads/download/` + props.upload.name} type="button" className="btn btn-primary btn-block float-right shadow mb-2">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-download float-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z"/>
+                            <path fill-rule="evenodd" d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z"/>
+                            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z"/>
+                        </svg>Download</a>
                         {
                         authContext.user.role === "admin"?
-                        <div className="btn-group btn-group-toggle w-100 mt-2 mb-2">
-                            <label className={`btn btn-secondary${!props.upload.integrated ? " active" : ""}`}>
+                        <div className="btn-group btn-group-toggle w-100 shadow rounded mb-2">
+                            <label className={`btn btn-secondary${!props.upload.integrated ? " active" : ""}`} style={{cursor: "pointer"}}>
                                 <input type="radio" name="optionNotIntegrated" autoComplete="off" defaultChecked={!props.upload.integrated} onChange={onIntegrationChangeHandler} />Not Integrated
                             </label>
-                            <label className={`btn btn-secondary${props.upload.integrated ? " active" : ""}`}>
+                            <label className={`btn btn-secondary${props.upload.integrated ? " active" : ""}`} style={{cursor: "pointer"}}>
                                 <input type="radio" name="optionIntegrated" autoComplete="off" defaultChecked={props.upload.integrated} onChange={onIntegrationChangeHandler} />Integrated
                             </label>
                         </div> : null
                         }
                         
-                        {authContext.user._id === props.upload.author._id? <button type="button" className="btn btn-danger btn-block float-right" onClick={confirmAndDelete}>{deleteText}</button> : null }
+                        {
+                        authContext.user._id === props.upload.author._id? 
+                        <button type="button" className="btn btn-danger btn-block float-right shadow rounded" onClick={confirmAndDelete}>
+                            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-trash-fill float-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                            </svg>{deleteText}
+                        </button> : null 
+                        }
                         
                     </div>
                     
                 </div>      
             </div>
-        </>
+        </Fade>
     );
 }
 
@@ -300,8 +310,8 @@ const UploadDash = (props) => {
     
     const FetchedView = () => {
         return (
-            <div className="p-2">
-                <div className="row mt-3 mb-4 pb-1 justify-content-center align-items-stretch border-bottom">
+            <>
+                <div className="row mb-3 pb-1 justify-content-center align-items-stretch">
                     <CoreInfo upload={upload} history={props.history} />
                 </div>
 
@@ -309,9 +319,7 @@ const UploadDash = (props) => {
                 <div className="row">
                     <ReviewsSection upload={upload} history={props.history} />
                 </div>
-
-                
-            </div>
+            </>
         );
     };
 

@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import UsersService from '../services/UsersService';
 import {AuthContext} from '../contexts/AuthContext';
 import ServerMessage from '../components/ServerMessage';
-
+import Fade from 'react-reveal/Fade';
 
 const Login = (props) => {
     const [user, setUser] = useState({username: "", password: ""});
@@ -28,7 +28,7 @@ const Login = (props) => {
     }
 
     return (
-        <>
+        <Fade down duration={300} distance={"16px"}>
             <form onSubmit={onSubmitHandler}>
                 <h1>Sign In</h1>
                 <div className="dropdown-divider mt-3 mb-4"/>
@@ -44,12 +44,12 @@ const Login = (props) => {
                        onChange={onChangeHandler}
                        className="form-control"
                        placeholder="Enter password" />
-                <button className="btn btn-lg btn-primary btn-block"
+                <button className="btn btn-lg btn-primary btn-block shadow mb-2"
                     type="submit">Log in</button>
                 
                 {message? <ServerMessage message={message} /> : null} 
             </form>
-        </>
+        </Fade>
     )
 };
 

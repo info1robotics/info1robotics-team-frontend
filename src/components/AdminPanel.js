@@ -6,7 +6,8 @@ import UploadsService from "../services/UploadsService";
 import UploadCard from "./UploadCard";
 import { AuthContext } from "../contexts/AuthContext";
 import { latestReviews, outdatedReviews } from '../utils/ReviewsUtils';
-
+import ServerMessage from "./ServerMessage";
+import Fade from 'react-reveal/Fade';
 
 const AllUsers = (props) => {
 
@@ -63,6 +64,7 @@ const AllUsers = (props) => {
     
 
     return (
+        
         <>
             <ul className="col list-group">
                 <table className="table">
@@ -78,7 +80,7 @@ const AllUsers = (props) => {
                     </tbody>
                 </table>
             </ul>
-            <button role="button" className="btn btn-outline-primary" onClick={onSendUsersUpdate}>Update Users</button>
+            <div className="text-center"><button role="button" className="btn btn-outline-secondary shadow rounded mb-2" onClick={onSendUsersUpdate}>Update Users</button></div>
         </>
     );
 
@@ -99,10 +101,15 @@ const ReadyToBeIntegratedUploads = (props) => {
             && lReviews.filter(review => review.positive).length === lReviews.length;
         });
         
-
-        setUploadsJSX(
-            validUploads.map(upload => <UploadCard upload={upload} />)
-        );
+        if(validUploads.length > 0)
+            setUploadsJSX(
+                validUploads.map(upload => <UploadCard upload={upload} />)
+            );
+        else setUploadsJSX(
+            <ServerMessage message={{success: true, msgBody: "There's nothing ready..."}} />
+        )
+        
+        
 
         
     }, []);
@@ -144,27 +151,34 @@ const AdminPanel = (props) => {
 
     const FetchedView = () => {
         return (
-            <>
-                <div className="row pt-3 justify-content-center pb-3">
+            <Fade down duration={300} distance={"16px"}>
+                <div className="shadow rounded mb-2 p-3 mb-5">
+                <div className="row pt-3 justify-content-center pb-3 ">
                     <div className="col-12 text-center">
                         <h2 className="">All Users</h2>
-                        <Link to="/inviteUser" type="button" className="btn btn-primary float-center">Invite User</Link>
+                        <Link to="/inviteUser" type="button" className="btn btn-primary float-center shadow mb-2">Invite User</Link>
                     </div>
                 </div>
                 <div className="row justify-content-center">
-                    <AllUsers users={users} history={props.history} />
+                    <div className="col">
+                        <AllUsers users={users} history={props.history} />
+                    </div>
+                    
+                </div>
                 </div>
                 
-                <div className="dropdown-divider m-4"/>
-                <div className="row pt-3 justify-content-center pb-3">
-                    <div className="col-12 text-center">
-                        <h2 className="">Uploads ready for the Notebook</h2>
+                <div className="shadow rounded">
+                    <div className="row pt-3 justify-content-center pb-3">
+                        <div className="col-12 text-center">
+                            <h2 className="">Uploads ready for the Notebook</h2>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <ReadyToBeIntegratedUploads uploads={uploads} />
                     </div>
                 </div>
-                <div className="row justify-content-center">
-                    <ReadyToBeIntegratedUploads uploads={uploads} />
-                </div>
-            </>
+                
+            </Fade>
         );
     };
 

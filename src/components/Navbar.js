@@ -55,7 +55,7 @@ const Navbar = props => {
         );
     }
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light shadow rounded mb-5">
             <div className="brand-name">infO(1) Robotics</div>
             <Link to="/">
                 <div className="navbar-brand"></div>
