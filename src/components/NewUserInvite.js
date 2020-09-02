@@ -54,7 +54,7 @@ const NewUserInvite = (props) => {
                     <label class="form-check-label" htmlFor="userRadio">Admin</label>
                 </div>
 
-                <button className="btn btn-lg btn-primary btn-block"
+                <button className="btn btn-lg btn-primary btn-block shadow mb-2"
                     type="submit">Invite</button>
                 
                 {message? <ServerMessage message={message} /> : null} 

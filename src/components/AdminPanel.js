@@ -80,7 +80,7 @@ const AllUsers = (props) => {
                     </tbody>
                 </table>
             </ul>
-            <div className="text-center"><button role="button" className="btn btn-outline-secondary shadow rounded mb-2" onClick={onSendUsersUpdate}>Update Users</button></div>
+            <div className="text-center"><button role="button" className="btn btn-secondary shadow rounded mb-2" onClick={onSendUsersUpdate}>Update Users</button></div>
         </>
     );
 

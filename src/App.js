@@ -12,7 +12,7 @@ import AdminPanel from './components/AdminPanel';
 import NotFound from './components/NotFound';
 import NewUserInvite from './components/NewUserInvite';
 import Fade from 'react-reveal/Fade';
-
+import './global.css';
 
 
 function App() {

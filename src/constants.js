@@ -1,3 +1,3 @@
 export default {
-    IP_ADDRESS: "localhost"
+    IP_ADDRESS: "188.241.118.142"
 };
