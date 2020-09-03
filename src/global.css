@@ -3,3 +3,16 @@ a {
     -moz-appearance: none !important;
     appearance: none !important;
 }
+
+.text-orange {
+    color: #FF8C00
+}
+
+.bg-orange {
+    background-color: #FF8C00
+}
+
+.alert-orange {
+    background-color: #FFDF67;
+    color: #BF5800
+}

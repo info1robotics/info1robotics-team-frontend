@@ -7,7 +7,7 @@ import { latestReviews, outdatedReviews } from '../utils/ReviewsUtils';
 import constants from '../constants';
 import Fade from 'react-reveal/Fade';
 import Tags from './Tags';
-
+import '../global.css';
 
 
 
@@ -137,7 +137,7 @@ const CoreStatus = (props) => {
     }, []);
 
     const getStatusVariant = (flag) => {
-        if (flag === 0) return "warning";
+        if (flag === 0) return "orange";
         else if (flag === 1) return "success";
         else if (flag === 2) return "danger";
     };
@@ -146,7 +146,7 @@ const CoreStatus = (props) => {
         <div className={props.className}>
             {
                 props.upload.integrated ?
-                    <h6 className={`card-subtitle text-${getStatusVariant(reviewsStatus.flag)} mb-2`}>In Notebook</h6> :
+                    <h6 className={`card-subtitle text-${getStatusVariant(reviewsStatus.flag)} text-center mb-2`}>In Notebook</h6> :
                     <div className={`alert alert-${getStatusVariant(reviewsStatus.flag)} d-block mb-2 w-100`}>
                         <span className="d-block text-center align-middle">{reviewsStatus.message}</span>
                     </div>
