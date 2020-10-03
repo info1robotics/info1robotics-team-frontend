@@ -17,9 +17,13 @@ export default {
             else return {success: false, message: "Request did not succeed!"};
         });
     },
-    checkin: () => {
+    checkin: (guests) => {
         return fetch('/visits/checkin', {
-            method: 'POST'
+            method: 'POST',
+            body: JSON.stringify({guests}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }).then(res => {
             if(res.status !== 401) return res.json().then(data => data);
             else return {success: false, message: "Request did not succeed!"};

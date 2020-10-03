@@ -4,7 +4,7 @@ import ServerMessage from '../components/ServerMessage';
 import Fade from 'react-reveal/Fade';
 
 const Register = (props) => {
-    const [user, setUser] = useState({username: "", email: "", password: "", secret: "", role: "user"});
+    const [user, setUser] = useState({username: "", email: "", fullname: "", password: "", secret: "", role: "user"});
     const [message, setMessage] = useState(null);
     let timerID = useRef(null);
 
@@ -48,6 +48,12 @@ const Register = (props) => {
                        onChange={onChangeHandler}
                        className="form-control"
                        placeholder="Enter email" />
+                <label htmlFor="fullname" className="sr-only">Full Name</label>
+                <input type="text" 
+                       name="fullname" 
+                       onChange={onChangeHandler}
+                       className="form-control"
+                       placeholder="Enter full name" />
                 <label htmlFor="password" className="sr-only">Password</label>
                 <input type="password" 
                        name="password" 
