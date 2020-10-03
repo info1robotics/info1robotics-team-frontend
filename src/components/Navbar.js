@@ -48,6 +48,9 @@ const Navbar = props => {
                     <li className="btn btn-link nav-item nav-link">Admin</li>
                 </Link> : null
             }
+            <Link to="/visits">
+                <li className="btn btn-link nav-item nav-link">Lab Visits</li>
+            </Link>
             <button type="button"
                 className="btn btn-link nav-item nav-link" onClick={onClickLogoutHandler}>Logout</button>
             

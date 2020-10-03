@@ -13,6 +13,8 @@ import NotFound from './components/NotFound';
 import NewUserInvite from './components/NewUserInvite';
 import Fade from 'react-reveal/Fade';
 import './global.css';
+import UserVisits from './components/UserVisits';
+
 
 
 function App() {
@@ -34,7 +36,7 @@ function App() {
               <Route exact path="/uploads" component={Uploads}/>
               <Route exact path="/uploads/new" component={UploadNew} />
               <Route exact path="/upload/:id" component={UploadDash} />
-
+              <Route exact path="/visits" component={UserVisits} />
               { user.role === "admin" && 
                 <Switch>
                   <Route exact path="/admin" component={AdminPanel} />

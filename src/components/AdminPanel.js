@@ -152,19 +152,20 @@ const AdminPanel = (props) => {
     const FetchedView = () => {
         return (
             <Fade down duration={300} distance={"16px"}>
+                <a href={`http://localhost:5002/visits/export/all`} className="btn btn-primary shadow" download>Download Lab Visits Report</a>
                 <div className="shadow rounded mb-2 p-3 mb-5">
-                <div className="row pt-3 justify-content-center pb-3 ">
-                    <div className="col-12 text-center">
-                        <h2 className="">All Users</h2>
-                        <Link to="/inviteUser" type="button" className="btn btn-primary float-center shadow mb-2">Invite User</Link>
+                    <div className="row pt-3 justify-content-center pb-3 ">
+                        <div className="col-12 text-center">
+                            <h2 className="">All Users</h2>
+                            <Link to="/inviteUser" type="button" className="btn btn-primary float-center shadow mb-2">Invite User</Link>
+                        </div>
                     </div>
-                </div>
-                <div className="row justify-content-center">
-                    <div className="col">
-                        <AllUsers users={users} history={props.history} />
+                    <div className="row justify-content-center">
+                        <div className="col">
+                            <AllUsers users={users} history={props.history} />
+                        </div>
+                        
                     </div>
-                    
-                </div>
                 </div>
                 
                 <div className="shadow rounded">
