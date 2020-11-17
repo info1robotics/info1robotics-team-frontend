@@ -11,3 +11,4 @@ export default {
 };
 ```
 3. Ruleaza ```npm start``` in root-ul directorului.
+4. Pentru a accesa site-ul, intrati pe ```adresa ip:3000```.
