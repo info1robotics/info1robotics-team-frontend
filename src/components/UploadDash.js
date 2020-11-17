@@ -245,7 +245,7 @@ const CoreInfo = (props) => {
 
                 <div className="row justify-content-center">
                     <div className="col col-md-6">
-                        <a href={`http://${constants.IP_ADDRESS}:5002/uploads/download/` + props.upload.name} type="button" className="btn btn-primary btn-block float-right shadow mb-2">
+                        <a href={`http://${constants.BACKEND_IP}:${constants.BACKEND_PORT}/uploads/download/` + props.upload.name} type="button" className="btn btn-primary btn-block float-right shadow mb-2">
                             <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-download float-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z" />
                                 <path fill-rule="evenodd" d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z" />
@@ -273,7 +273,7 @@ const CoreInfo = (props) => {
                         }
 
 
-                        <div className="mb-n2"/>
+                        <div className="mb-n2" />
                     </div>
 
 

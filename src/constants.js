@@ -1,3 +1,4 @@
 export default {
-    IP_ADDRESS: "188.241.118.142"
+    BACKEND_IP: "localhost",
+    BACKEND_PORT: "5002"
 };

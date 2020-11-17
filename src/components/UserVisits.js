@@ -22,7 +22,7 @@ const VisitStatusLabel = (props) => {
         if(props.myVisit.startDate) {
             const time = timeDelta(new Date(), new Date(props.myVisit.startDate));
 
-            setInProgressTimer(`${time.hours}:${time.minutes}:${time.seconds}`);   
+            setInProgressTimer(`${time.hours < 10? "0" : ""}${time.hours}:${time.minutes < 10? "0" : ""}${time.minutes}:${time.seconds < 10? "0" : ""}${time.seconds}`);   
         } else setInProgressTimer("");
     };
 
@@ -93,7 +93,7 @@ const VisitChoiceSolo = (props) => {
         props.checkoutCallback();
     }
     return (
-        <CheckXButton myVisit={props.myVisit} checkinCallback={checkinCallback} checkoutCallback={checkoutCallback}  />
+        <><CheckXButton myVisit={props.myVisit} checkinCallback={checkinCallback} checkoutCallback={checkoutCallback}  /></>
     )
 
 };
@@ -117,7 +117,7 @@ const VisitChoiceMulti = (props) => {
     return (
         <>
             <div className="row">
-                <input type="text" className="form-control" placeholder="Enter guest(s) name(s)" onChange={onGuestsInputChangeHandler} defaultValue={props.myVisit.guests} disabled={props.myVisit.startDate} />
+                <input type="text" className="form-control mb-2 m-3" placeholder="Enter guest(s) name(s)" onChange={onGuestsInputChangeHandler} defaultValue={props.myVisit.guests} disabled={props.myVisit.startDate} />
             </div>
             <CheckXButton myVisit={props.myVisit} checkinCallback={checkinCallback} checkoutCallback={checkoutCallback} disabled={guests === "" && !props.myVisit.startDate}  />
         </>
@@ -130,7 +130,7 @@ const UserVisit = (props) => {
     };
 
     return (
-    <Fade down duration={300} distance={"16px"}>
+    <>
         <div className="col col-md-3">
             <div className="card rounded shadow border-0" style={{width: "100%"}}>
             <div className="card-body">
@@ -138,14 +138,14 @@ const UserVisit = (props) => {
                     <svg viewBox="0 0 16 16" className="bi bi-person-fill" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                     </svg>
-                    {props.visit.user.username}
+                    {props.visit.user.username + (props.visit.guests? ` (cu ${props.visit.guests})` : "")}
                 </h5>
                 <h6 className="card-subtitle mb-2 text-muted">Since {simplifiedTime(props.visit.startDate)}</h6>
                 <p className="card-text"></p>
             </div>
             </div>
         </div>
-    </Fade>
+    </>
         
         
     );
@@ -243,6 +243,9 @@ const UserVisits = (props) => {
         });
     };
 
+    const resetUserChoice = () => {
+        setUserChoice(0);
+    }
 
 
     const FetchedView = () => {
@@ -261,6 +264,8 @@ const UserVisits = (props) => {
                         <VisitStatusLabel myVisit={myVisit}/>
 
                         {visitChoice}
+
+                        {userChoice !== 0 && !myVisit.startDate? <button type="button" class="btn btn-lg btn-link font-weight-bold" onClick={resetUserChoice}>{`< Go Back`}</button> : null}
                         
                         <div className="row h-100 justify-content-center">
                             {inProgressVisitsJSX}

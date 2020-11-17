@@ -8,11 +8,12 @@ import { AuthContext } from "../contexts/AuthContext";
 import { latestReviews, outdatedReviews } from '../utils/ReviewsUtils';
 import ServerMessage from "./ServerMessage";
 import Fade from 'react-reveal/Fade';
+import constants from "../constants";
 
 const AllUsers = (props) => {
 
     const [usersJSX, setUsersJSX] = useState([]);
-    const [usersUpdate, setUsersUpdate] = useState(props.users.map(user => { return {role: user.role, _id: user._id, username: user.username, email: user.email} }));
+    const [usersUpdate, setUsersUpdate] = useState(props.users.map(user => { return { role: user.role, _id: user._id, username: user.username, email: user.email } }));
     const authContext = useContext(AuthContext);
 
 
@@ -21,9 +22,9 @@ const AllUsers = (props) => {
             props.users.map(user => {
                 return (
                     <tr>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td><input type="checkbox" aria-label="" name={user._id} defaultChecked={user.role === "admin"} disabled={authContext.user._id === user._id} onChange={onChangeHandler}/></td>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td><input type="checkbox" aria-label="" name={user._id} defaultChecked={user.role === "admin"} disabled={authContext.user._id === user._id} onChange={onChangeHandler} /></td>
                     </tr>
                 );
             })
@@ -32,20 +33,20 @@ const AllUsers = (props) => {
 
 
     const onChangeHandler = (event) => {
-        
-        for(var i = 0; i < usersUpdate.length; i++) {
-            if(usersUpdate[i]._id === event.target.name) {
+
+        for (var i = 0; i < usersUpdate.length; i++) {
+            if (usersUpdate[i]._id === event.target.name) {
                 let updatedArray = [...usersUpdate];
-                updatedArray[i].role = event.target.checked? "admin" : "user";
+                updatedArray[i].role = event.target.checked ? "admin" : "user";
                 setUsersUpdate(updatedArray);
                 break;
             }
 
         }
 
-        
 
-        
+
+
     };
 
     const onSendUsersUpdate = async (event) => {
@@ -53,7 +54,7 @@ const AllUsers = (props) => {
         const data = await UsersService.updateUsers(usersUpdate);
 
 
-        if(data.success) {
+        if (data.success) {
             console.log(props);
             props.history.push('/home');
             props.history.push('/admin');
@@ -61,18 +62,18 @@ const AllUsers = (props) => {
             /* TODO */
         }
     };
-    
+
 
     return (
-        
+
         <>
             <ul className="col list-group">
                 <table className="table">
                     <thead>
                         <tr>
-                        <th scope="col">Username</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Admin?</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Admin?</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,23 +96,23 @@ const ReadyToBeIntegratedUploads = (props) => {
         const validUploads = props.uploads.filter(upload => {
 
             const lReviews = latestReviews(upload.reviews);
-            
-            return !upload.integrated 
-            && lReviews.length > 0 
-            && lReviews.filter(review => review.positive).length === lReviews.length;
+
+            return !upload.integrated
+                && lReviews.length > 0
+                && lReviews.filter(review => review.positive).length === lReviews.length;
         });
-        
-        if(validUploads.length > 0)
+
+        if (validUploads.length > 0)
             setUploadsJSX(
                 validUploads.map(upload => <UploadCard upload={upload} />)
             );
         else setUploadsJSX(
-            <ServerMessage message={{success: true, msgBody: "There's nothing ready..."}} />
+            <ServerMessage message={{ success: true, msgBody: "There's nothing ready..." }} />
         )
-        
-        
 
-        
+
+
+
     }, []);
 
     return <>{uploadsJSX}</>;
@@ -124,7 +125,7 @@ const AdminPanel = (props) => {
     const [uploads, setUploads] = useState([]);
 
     const [hasFetched, setHasFetched] = useState(false);
-    
+
 
     useEffect(() => {
 
@@ -132,11 +133,11 @@ const AdminPanel = (props) => {
             const usersData = await UsersService.getAllUsers();
             const uploadsData = await UploadsService.getAllUploads();
 
-            if(usersData.success) {
+            if (usersData.success) {
                 setUsers(usersData.users);
             }
 
-            if(uploadsData.success) {
+            if (uploadsData.success) {
                 setUploads(uploadsData.uploads);
             }
 
@@ -144,15 +145,15 @@ const AdminPanel = (props) => {
         };
 
         fetchData();
-        
-    
+
+
     }, []);
 
 
     const FetchedView = () => {
         return (
             <Fade down duration={300} distance={"16px"}>
-                <a href={`http://localhost:5002/visits/export/all`} className="btn btn-primary shadow" download>Download Lab Visits Report</a>
+                <a href={`http://${constants.BACKEND_IP}:${constants.BACKEND_PORT}/visits/export/all`} className="btn btn-primary shadow" download>Download Lab Visits Report</a>
                 <div className="shadow rounded mb-2 p-3 mb-5">
                     <div className="row pt-3 justify-content-center pb-3 ">
                         <div className="col-12 text-center">
@@ -164,10 +165,10 @@ const AdminPanel = (props) => {
                         <div className="col">
                             <AllUsers users={users} history={props.history} />
                         </div>
-                        
+
                     </div>
                 </div>
-                
+
                 <div className="shadow rounded">
                     <div className="row pt-3 justify-content-center pb-3">
                         <div className="col-12 text-center">
@@ -178,7 +179,7 @@ const AdminPanel = (props) => {
                         <ReadyToBeIntegratedUploads uploads={uploads} />
                     </div>
                 </div>
-                
+
             </Fade>
         );
     };
@@ -189,10 +190,10 @@ const AdminPanel = (props) => {
     }
 
 
-    
+
     return (
         <>
-        {hasFetched? FetchedView() : UnfetchedView()}
+            {hasFetched ? FetchedView() : UnfetchedView()}
         </>
     );
 };
