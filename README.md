@@ -7,7 +7,7 @@ Easy to use and accesible to the large public we wish to make this season easier
 ## Install
 
 
-1. Donload and configure the backend: https://github.com/info1robotics/info1robotics-team-backend
+1. Download and configure the backend first: https://github.com/info1robotics/info1robotics-team-backend
 2. Download ```main``` branch.
 3. Create ```constants.js``` file in the the directory root with the following contents:
 ```
