@@ -27,8 +27,8 @@ export default {
 
 ### Admin permissions:
 - You can go to **Admin** and see a list of all users
-- You can go to **Adimin** and download all visits as an ```.xlsx``` file
-- To invite new users you can go to **Admin**, press **Invite Users** and enter their email.
+- You can go to **Admin** and download all visits as an ```.xlsx``` file
+- To invite new users you can go to **Admin**, press **Invite Users** and enter their email. Those invited must then click **Register** and enter their desired credentials, with the invited email address.
 - You can give or remove admin permissions to users.
 
 
