@@ -9,15 +9,16 @@ Easy to use and accesible to the large public we wish to make this season easier
 
 1. Download and configure the backend first: https://github.com/info1robotics/info1robotics-team-backend
 2. Download ```main``` branch.
-3. Create ```constants.js``` file in the the directory root with the following contents:
+3. Install the related packages - `npm install .`
+4. Create ```constants.js``` file in the the directory root with the following contents:
 ```
 export default {
     BACKEND_IP: "ip public backend",
     BACKEND_PORT: "port backend; recomandat 5002"
 };
 ```
-4. Run ```npm start```.
-5. To access the website, use port ```3000```.
+5. Run ```npm start```.
+6. To access the website, use port ```3000```.
 
 ## How to use 
 
